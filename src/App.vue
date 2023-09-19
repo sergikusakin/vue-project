@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <button @click="addLike">Like</button>
-    <button @click="addDislike">Dislike</button>
-  </div>
     <div>
-      <div>Number of likes: <strong>{{ likes }}</strong></div>
-      <div>Number of dislikes: <strong>{{ dislikes }}</strong></div>
+      <div class="post">
+        <div><strong>Name:</strong> Post about JS</div>
+        <div><strong>Description:</strong> Lorem ipsum dolor sit amet.</div>
+      </div>
+      <div class="post">
+        <div><strong>Name:</strong> Post about JS</div>
+        <div><strong>Description:</strong> Lorem ipsum dolor sit amet.</div>
+      </div>
+      <div class="post">
+        <div><strong>Name:</strong> Post about JS</div>
+        <div><strong>Description:</strong> Lorem ipsum dolor sit amet.</div>
+      </div>
     </div>
 
 </template>
@@ -32,4 +38,18 @@ export default defineComponent({
 })
 </script>
   
-<style></style>
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.post{
+  padding: 15px;
+  border: 2px solid olive;
+  margin-top: 15px;
+}
+
+</style>
