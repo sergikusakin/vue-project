@@ -5,13 +5,14 @@
           <h4>Create your post</h4>
             <input 
               v-bind:value="title" 
-              @input="inputTitle"
+              @input="handleTitleInput"
               class="input" 
               type="text" 
               placeholder="Name of the post"
             >
             <input 
-              v-bind:value="body" 
+              v-bind:value="body"
+              @input="handleBodyInput" 
               class="input" 
               type="text" 
               placeholder="Description of the post"
@@ -49,8 +50,11 @@ export default defineComponent({
       createPost() {
 
       },
-      inputTitle(event){
-        this.title = event.target.value
+      handleTitleInput(event: Event){
+        this.title = (event?.target as any).value
+      },
+      handleBodyInput(event: Event){
+        this.body = (event?.target as any).value
       }
     }
 })
