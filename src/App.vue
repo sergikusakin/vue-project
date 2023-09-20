@@ -3,9 +3,23 @@
       <div>
         <form>
           <h4>Create your post</h4>
-            <input class="input" type="text" placeholder="Name of the post">
-            <input class="input" type="text" placeholder="Description of the post">
-            <button class="btn">Create</button>
+            <input 
+              v-bind:value="title" 
+              @input="inputTitle"
+              class="input" 
+              type="text" 
+              placeholder="Name of the post"
+            >
+            <input 
+              v-bind:value="body" 
+              class="input" 
+              type="text" 
+              placeholder="Description of the post"
+            >
+            <button 
+              class="btn" 
+              @click="createPost">Create
+            </button>
         </form>
       </div>
       <div class="post" v-for="post in posts">
@@ -26,16 +40,21 @@ export default defineComponent({
         {id: 2, title: 'JS Post 2', body: 'Description of the post 2'},
         {id: 3, title: 'JS Post 3', body: 'Description of the post 3'},
         {id: 4, title: 'JS Post 4', body: 'Description of the post 4'},
-
-       ]
+       ],
+        title: '',
+        body: ''
       }
     },
     methods: {
-     
+      createPost() {
 
+      },
+      inputTitle(event){
+        this.title = event.target.value
+      }
     }
 })
-</script>
+</script> 
   
 <style>
 
