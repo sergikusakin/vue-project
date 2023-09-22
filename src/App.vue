@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <PostForm />
+    <PostForm @create="createPost" />
     <PostList :posts="posts" />
   </div>
 </template>
@@ -22,22 +22,13 @@ export default defineComponent({
         { id: 3, title: "JS Post 3", body: "Description of the post 3" },
         { id: 4, title: "JS Post 4", body: "Description of the post 4" },
       ],
-      title: "",
-      body: "",
     };
   },
 
   methods: {
-    // this.posts.push(newPost);
-    // this.title = '';
-    // this.body = '';
-    // },
-    // handleTitleInput(event: Event){
-    //   this.title = (event?.target as any).value
-    //   },
-    // handleBodyInput(event: Event){
-    //   this.body = (event?.target as any).value
-    //   },
+    createPost(post: unknown) {
+      this.posts.push(post as any);
+    },
   },
 });
 </script>

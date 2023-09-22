@@ -16,10 +16,7 @@
         type="text"
         placeholder="Description of the post"
       />
-      <button class="btn">
-        Create
-        <!-- @click="createPost">Create -->
-      </button>
+      <button class="btn" @click="createPost">Create</button>
     </form>
   </div>
 </template>
@@ -31,16 +28,25 @@ export default defineComponent({
   data() {
     return {
       post: {
+        id: 0,
         title: "",
         body: "",
       },
     };
   },
   methods: {
+    createPost() {
+      this.post.id = Date.now();
+      this.$emit("create", this.post);
+      this.post = {
+        id: 0,
+        title: "",
+        body: "",
+      };
+    },
     handleTitleInput(event: Event) {
       this.post.title = (event?.target as any).value;
     },
-
     handleBodyInput(event: Event) {
       this.post.body = (event?.target as any).value;
     },
