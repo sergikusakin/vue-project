@@ -16,15 +16,19 @@
         type="text"
         placeholder="Description of the post"
       />
-      <button class="btn" @click="createPost">Create</button>
+      <my-button class="btn" @click="createPost">Create</my-button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import MyButton from "@/components/UI/MyButton.vue";
 
 export default defineComponent({
+  components: {
+    MyButton,
+  },
   data() {
     return {
       post: {
@@ -65,14 +69,5 @@ form {
   border: 1px solid olive;
   padding: 10px, 15px;
   margin-top: 10px;
-}
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 8px 12px;
-  background: none;
-  color: black;
-  border: 1px solid olive;
 }
 </style>
