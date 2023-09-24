@@ -1,14 +1,17 @@
 <template>
-  <div class="post" v-for="post in posts">
+  <h3>List of users</h3>
+  <post-item class="post" v-for="post in posts" :post="post">
     <div><strong>Name: </strong>{{ post.title }}</div>
     <div><strong>Description: </strong>{{ post.body }}</div>
-  </div>
+  </post-item>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import PostItem from "@/components/PostItem.vue";
 
 export default defineComponent({
+  components: { PostItem },
   props: {
     posts: {
       type: Array as PropType<{ title: string; body: string }[]>,
@@ -22,10 +25,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.post {
-  padding: 15px;
-  border: 2px solid olive;
-  margin-top: 15px;
-}
-</style>
+<style scoped></style>
