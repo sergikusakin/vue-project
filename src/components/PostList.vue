@@ -1,9 +1,6 @@
 <template>
   <h3>List of users</h3>
-  <post-item class="post" v-for="post in posts" :post="post">
-    <div><strong>Name: </strong>{{ post.title }}</div>
-    <div><strong>Description: </strong>{{ post.body }}</div>
-  </post-item>
+  <post-item class="post" v-for="post in posts" :post="post"> </post-item>
 </template>
 
 <script lang="ts">
