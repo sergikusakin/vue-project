@@ -2,17 +2,15 @@
   <div>
     <form @submit.prevent>
       <h4>Create your post</h4>
-      <input
+      <my-input
         :value="post.title"
         @input="handleTitleInput"
-        class="input"
         type="text"
         placeholder="Name of the post"
       />
-      <input
+      <my-input
         :value="post.body"
         @input="handleBodyInput"
-        class="input"
         type="text"
         placeholder="Description of the post"
       />
@@ -24,10 +22,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import MyInput from "@/components/UI/MyInput.vue";
 
 export default defineComponent({
   components: {
     MyButton,
+    MyInput,
   },
   data() {
     return {
@@ -62,12 +62,5 @@ export default defineComponent({
 form {
   display: flex;
   flex-direction: column;
-}
-
-.input {
-  width: 100%;
-  border: 1px solid olive;
-  padding: 10px, 15px;
-  margin-top: 10px;
 }
 </style>
