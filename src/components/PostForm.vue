@@ -3,13 +3,13 @@
     <form @submit.prevent>
       <h4>Create your post</h4>
       <my-input
-        :value="post.title"
+        v-model="post.title"
         @input="handleTitleInput"
         type="text"
         placeholder="Name of the post"
       />
       <my-input
-        :value="post.body"
+        v-model="post.body"
         @input="handleBodyInput"
         type="text"
         placeholder="Description of the post"
