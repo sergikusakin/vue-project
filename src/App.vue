@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <PostForm @create="createPost" />
-    <PostList :posts="posts" />
+    <PostList :posts="posts" @remove="removePost" />
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import { defineComponent } from "vue";
 
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+import type { Post } from "./entities/post";
 
 export default defineComponent({
   components: { PostForm, PostList },
@@ -21,13 +22,16 @@ export default defineComponent({
         { id: 2, title: "JS Post 2", body: "Description of the post 2" },
         { id: 3, title: "JS Post 3", body: "Description of the post 3" },
         { id: 4, title: "JS Post 4", body: "Description of the post 4" },
-      ],
+      ] as Post[],
     };
   },
 
   methods: {
-    createPost(post: unknown) {
-      this.posts.push(post as any);
+    createPost(post: Post) {
+      this.posts.push(post);
+    },
+    removePost(post: Post) {
+      this.posts = this.posts.filter((p) => p.id !== post.id);
     },
   },
 });

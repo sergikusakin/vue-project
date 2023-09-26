@@ -5,20 +5,21 @@
       <div><strong>Description: </strong>{{ post.body }}</div>
     </div>
     <div class="post-btns">
-      <my-button>Delete</my-button>
+      <my-button @click="$emit('remove', post)">Delete</my-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import type { Post } from "@/entities/post";
 
 export default defineComponent({
   components: { MyButton },
   props: {
     post: {
-      type: Object,
+      type: Object as PropType<Post>,
       required: true,
     },
   },
