@@ -53,6 +53,10 @@ export default defineComponent({
       }
     },
   },
+
+  mounted() {
+    this.fetchPost();
+  },
 });
 </script>
 
