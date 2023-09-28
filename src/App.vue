@@ -1,6 +1,13 @@
 <template>
   <div class="app">
-    <PostForm @create="createPost" />
+    <h1>Page with posts</h1>
+    <my-button class="btn-dialog" @click="showDialog"
+      >Create your post</my-button
+    >
+    <my-dialog v-model:show="dialogVisible">
+      <PostForm @create="createPost" />
+    </my-dialog>
+
     <PostList :posts="posts" @remove="removePost" />
   </div>
 </template>
@@ -23,15 +30,20 @@ export default defineComponent({
         { id: 3, title: "JS Post 3", body: "Description of the post 3" },
         { id: 4, title: "JS Post 4", body: "Description of the post 4" },
       ] as Post[],
+      dialogVisible: false,
     };
   },
 
   methods: {
     createPost(post: Post) {
       this.posts.push(post);
+      this.dialogVisible = false;
     },
     removePost(post: Post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
+    },
+    showDialog() {
+      this.dialogVisible = true;
     },
   },
 });
@@ -46,5 +58,10 @@ export default defineComponent({
 
 .app {
   padding: 20px;
+}
+
+.btn-dialog {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 </style>

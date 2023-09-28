@@ -1,13 +1,18 @@
 <template>
-  <h3>List of users</h3>
-  <post-item
-    class="post"
-    v-for="post in posts"
-    :post="post"
-    :key="post.id"
-    @remove="$emit('remove', post)"
-  >
-  </post-item>
+  <div v-if="posts.length > 0">
+    <h3>List of users</h3>
+    <post-item
+      class="post"
+      v-for="post in posts"
+      :post="post"
+      :key="post.id"
+      @remove="$emit('remove', post)"
+    >
+    </post-item>
+  </div>
+  <div v-else class="emptyList">
+    <h3>Empty list</h3>
+  </div>
 </template>
 
 <script lang="ts">
@@ -26,4 +31,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.emptyList {
+  color: gray;
+}
+</style>
