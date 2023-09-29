@@ -9,7 +9,8 @@
       <PostForm @create="createPost" />
     </my-dialog>
 
-    <PostList :posts="posts" @remove="removePost" />
+    <PostList :posts="posts" @remove="removePost" v-if="!isPostLoading" />
+    <div v-else>Loading... wait please</div>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ export default defineComponent({
     return {
       posts: [] as Post[],
       dialogVisible: false,
+      isPostLoading: false,
     };
   },
 
@@ -44,12 +46,17 @@ export default defineComponent({
     },
     async fetchPost() {
       try {
-        const response = await aixos.get(
-          "https://jsonplaceholder.typicode.com/posts?_limit=10"
-        );
-        this.posts = response.data;
+        this.isPostLoading = true;
+        setTimeout(async () => {
+          const response = await aixos.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          );
+          this.posts = response.data;
+          this.isPostLoading = false;
+        }, 1000);
       } catch (e) {
         alert("Error");
+      } finally {
       }
     },
   },
