@@ -1,10 +1,14 @@
 <template>
   <div class="app">
     <h1>Page with posts</h1>
+    <div class="app-btns">
+      <my-button class="btn-dialog" @click="showDialog"
+        >Create your post</my-button
+      >
+      <my-select>SELECT</my-select>
+    </div>
     <my-button @click="fetchPost">Let's get posts</my-button>
-    <my-button class="btn-dialog" @click="showDialog"
-      >Create your post</my-button
-    >
+
     <my-dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </my-dialog>
@@ -19,11 +23,13 @@ import { defineComponent } from "vue";
 
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+import MySelect from "@/components/UI/MySelect.vue";
+import MyButton from "@/components/UI/MyButton.vue";
 import type { Post } from "./entities/post";
 import aixos from "axios";
 
 export default defineComponent({
-  components: { PostForm, PostList },
+  components: { PostForm, PostList, MySelect },
 
   data() {
     return {
@@ -76,6 +82,11 @@ export default defineComponent({
 
 .app {
   padding: 20px;
+}
+
+.app-btns {
+  display: flex;
+  justify-content: space-between;
 }
 
 .btn-dialog {
