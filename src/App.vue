@@ -5,10 +5,9 @@
       <my-button class="btn-dialog" @click="showDialog"
         >Create your post</my-button
       >
-      <my-select>SELECT</my-select>
+      <my-select v-model="selectedSort" :options="sortOptions"></my-select>
     </div>
-    <my-button @click="fetchPost">Let's get posts</my-button>
-
+    <my-button class="app-btns" @click="fetchPost">Let's get posts</my-button>
     <my-dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </my-dialog>
@@ -36,6 +35,11 @@ export default defineComponent({
       posts: [] as Post[],
       dialogVisible: false,
       isPostLoading: false,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "Select by name" },
+        { value: "body", name: "Select by content" },
+      ],
     };
   },
 
@@ -50,6 +54,7 @@ export default defineComponent({
     showDialog() {
       this.dialogVisible = true;
     },
+
     async fetchPost() {
       try {
         this.isPostLoading = true;
@@ -87,10 +92,11 @@ export default defineComponent({
 .app-btns {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .btn-dialog {
   margin-top: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 </style>

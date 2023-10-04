@@ -1,7 +1,13 @@
 <template>
-  <select v-model="modelValue">
+  <select v-model="modelValue" @change="changeOption">
     <option disabled value="">Select from the list</option>
-    <option v-for="option in options" :key="(option as any).value"></option>
+    <option
+      v-for="option in options"
+      :key="(option as any).value"
+      :value="(option as any).value"
+    >
+      {{ (option as any).name }}
+    </option>
   </select>
 </template>
 
@@ -17,6 +23,11 @@ export default defineComponent({
     options: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    changeOption(event: Event) {
+      this.$emit("update:modelValue", (event?.target as any).value);
     },
   },
   data() {
