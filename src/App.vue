@@ -12,7 +12,7 @@
       <PostForm @create="createPost" />
     </my-dialog>
 
-    <PostList :posts="posts" @remove="removePost" v-if="!isPostLoading" />
+    <PostList :posts="sortedPost" @remove="removePost" v-if="!isPostLoading" />
     <div v-else>Loading... wait please</div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default defineComponent({
       posts: [] as Post[],
       dialogVisible: false,
       isPostLoading: false,
-      selectedSort: "",
+      selectedSort: "title" as "title" | "body",
       sortOptions: [
         { value: "title", name: "Select by name" },
         { value: "body", name: "Select by content" },
@@ -54,7 +54,6 @@ export default defineComponent({
     showDialog() {
       this.dialogVisible = true;
     },
-
     async fetchPost() {
       try {
         this.isPostLoading = true;
@@ -75,6 +74,16 @@ export default defineComponent({
   mounted() {
     this.fetchPost();
   },
+  computed: {
+    sortedPost() {
+      return [...this.posts].sort((post1, post2) => {
+        return (post1[this.selectedSort] as any)?.localeCompare(
+          post2[this.selectedSort] as any
+        );
+      });
+    },
+  },
+  watch: {},
 });
 </script>
 
