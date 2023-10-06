@@ -1,18 +1,31 @@
 <template>
   <div class="app">
     <h1>Page with posts</h1>
+    <my-input
+      class="space-search"
+      v-model="searchQuery"
+      placeholder="Search..."
+    ></my-input>
     <div class="app-btns">
       <my-button class="btn-dialog" @click="showDialog"
         >Create your post</my-button
       >
-      <my-select v-model="selectedSort" :options="sortOptions"></my-select>
+      <my-select
+        class="select"
+        v-model="selectedSort"
+        :options="sortOptions"
+      ></my-select>
     </div>
     <my-button class="app-btns" @click="fetchPost">Let's get posts</my-button>
     <my-dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </my-dialog>
 
-    <PostList :posts="sortedPost" @remove="removePost" v-if="!isPostLoading" />
+    <PostList
+      :posts="sortedAndSearchedPosts"
+      @remove="removePost"
+      v-if="!isPostLoading"
+    />
     <div v-else>Loading... wait please</div>
   </div>
 </template>
@@ -24,17 +37,19 @@ import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MySelect from "@/components/UI/MySelect.vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import MyInput from "@/components/UI/MyInput.vue";
 import type { Post } from "./entities/post";
 import aixos from "axios";
 
 export default defineComponent({
-  components: { PostForm, PostList, MySelect },
+  components: { PostForm, PostList, MySelect, MyInput },
 
   data() {
     return {
       posts: [] as Post[],
       dialogVisible: false,
       isPostLoading: false,
+      searchQuery: "",
       selectedSort: "title" as "title" | "body",
       sortOptions: [
         { value: "title", name: "Select by name" },
@@ -82,6 +97,11 @@ export default defineComponent({
         );
       });
     },
+    sortedAndSearchedPosts() {
+      return this.sortedPost.filter((post) =>
+        post.title.includes(this.searchQuery)
+      );
+    },
   },
   watch: {},
 });
@@ -98,13 +118,24 @@ export default defineComponent({
   padding: 20px;
 }
 
+.space-search {
+  padding: 10px;
+}
+
 .app-btns {
   display: flex;
   justify-content: space-between;
+  margin-top: 5px;
   margin-bottom: 15px;
 }
 
 .btn-dialog {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.select {
+  justify-content: space-between;
   margin-top: 15px;
   margin-bottom: 5px;
 }
