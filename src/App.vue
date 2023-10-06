@@ -99,7 +99,7 @@ export default defineComponent({
     },
     sortedAndSearchedPosts() {
       return this.sortedPost.filter((post) =>
-        post.title.includes(this.searchQuery)
+        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
   },
