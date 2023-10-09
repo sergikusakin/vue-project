@@ -27,6 +27,17 @@
       v-if="!isPostLoading"
     />
     <div v-else>Loading... wait please</div>
+    <div class="page-wrapper">
+      <div
+        class="page-line"
+        v-for="pageNumber in totalPages"
+        :key="pageNumber"
+        :class="{ 'current-page-line': page === pageNumber }"
+        @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,6 +61,9 @@ export default defineComponent({
       dialogVisible: false,
       isPostLoading: false,
       searchQuery: "",
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       selectedSort: "title" as "title" | "body",
       sortOptions: [
         { value: "title", name: "Select by name" },
@@ -69,12 +83,25 @@ export default defineComponent({
     showDialog() {
       this.dialogVisible = true;
     },
+    changePage(pageNumber: any) {
+      this.page = pageNumber;
+    },
+
     async fetchPost() {
       try {
         this.isPostLoading = true;
         setTimeout(async () => {
           const response = await aixos.get(
-            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
+          );
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
           );
           this.posts = response.data;
           this.isPostLoading = false;
@@ -103,7 +130,11 @@ export default defineComponent({
       );
     },
   },
-  watch: {},
+  watch: {
+    page() {
+      this.fetchPost();
+    },
+  },
 });
 </script>
 
@@ -138,5 +169,19 @@ export default defineComponent({
   justify-content: space-between;
   margin-top: 15px;
   margin-bottom: 5px;
+}
+
+.page-wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.page-line {
+  border: 1px solid olive;
+  padding: 10px;
+}
+
+.current-page-line {
+  border: 2px solid black;
 }
 </style>
