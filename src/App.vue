@@ -27,7 +27,8 @@
       v-if="!isPostLoading"
     />
     <div v-else>Loading... wait please</div>
-    <div class="page-wrapper">
+    <div class="observer" ref="observer"></div>
+    <!-- <div class="page-wrapper">
       <div
         class="page-line"
         v-for="pageNumber in totalPages"
@@ -37,7 +38,7 @@
       >
         {{ pageNumber }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -83,9 +84,9 @@ export default defineComponent({
     showDialog() {
       this.dialogVisible = true;
     },
-    changePage(pageNumber: any) {
-      this.page = pageNumber;
-    },
+    // changePage(pageNumber: any) {
+    //   this.page = pageNumber;
+    // },
 
     async fetchPost() {
       try {
@@ -111,10 +112,44 @@ export default defineComponent({
       } finally {
       }
     },
+    async loadMorePost() {
+      try {
+        this.page = +1;
+        setTimeout(async () => {
+          const response = await aixos.get(
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
+          );
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
+          );
+          this.posts = [...this.posts, ...response.data];
+        }, 1000);
+      } catch (e) {
+        alert("Error");
+      }
+    },
   },
 
   mounted() {
     this.fetchPost();
+    console.log(this.$refs.observer);
+    const options = {
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+    const callback = (entries, observer) => {
+      if (entries[0].isIntersecting && this.page < this.totalPages) {
+        this.loadMorePost();
+      }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPost() {
@@ -124,6 +159,7 @@ export default defineComponent({
         );
       });
     },
+
     sortedAndSearchedPosts() {
       return this.sortedPost.filter((post) =>
         post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
@@ -131,9 +167,9 @@ export default defineComponent({
     },
   },
   watch: {
-    page() {
-      this.fetchPost();
-    },
+    // page() {
+    //   this.fetchPost();
+    // },
   },
 });
 </script>
@@ -183,5 +219,11 @@ export default defineComponent({
 
 .current-page-line {
   border: 2px solid black;
+}
+
+.observer {
+  height: 30px;
+  background: olive;
+  margin-top: 15px;
 }
 </style>
