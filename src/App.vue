@@ -65,8 +65,9 @@ export default defineComponent({
       page: 1,
       limit: 10,
       totalPages: 0,
-      selectedSort: "title" as "title" | "body",
+      selectedSort: undefined as "title" | "body" | undefined,
       sortOptions: [
+        { value: undefined, name: "No sort" },
         { value: "title", name: "Select by name" },
         { value: "body", name: "Select by content" },
       ],
@@ -114,7 +115,7 @@ export default defineComponent({
     },
     async loadMorePost() {
       try {
-        this.page = +1;
+        this.page++;
         setTimeout(async () => {
           const response = await aixos.get(
             "https://jsonplaceholder.typicode.com/posts",
@@ -135,7 +136,6 @@ export default defineComponent({
       }
     },
   },
-
   mounted() {
     this.fetchPost();
     console.log(this.$refs.observer);
@@ -143,20 +143,24 @@ export default defineComponent({
       rootMargin: "0px",
       threshold: 1.0,
     };
-    const callback = (entries, observer) => {
+    const callback = (entries: any, observer: any) => {
       if (entries[0].isIntersecting && this.page < this.totalPages) {
         this.loadMorePost();
       }
     };
     const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
+    observer.observe(this.$refs.observer as Element);
   },
   computed: {
     sortedPost() {
+      const sort = this.selectedSort;
+
+      if (sort === undefined) {
+        return this.posts;
+      }
+
       return [...this.posts].sort((post1, post2) => {
-        return (post1[this.selectedSort] as any)?.localeCompare(
-          post2[this.selectedSort] as any
-        );
+        return post1[sort]?.localeCompare(post2[sort]);
       });
     },
 
