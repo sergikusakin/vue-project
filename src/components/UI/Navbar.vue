@@ -2,7 +2,7 @@
   <div class="navbar">
     <div @click="$router.push('/')">Project with use technology vue.js</div>
     <div class="navbar-btns">
-      <my-button @click="$router.push('/users')">Users</my-button>
+      <my-button @click="$router.push('/users')">Posts</my-button>
       <my-button class="btn-about" @click="$router.push('/about')"
         >About</my-button
       >
