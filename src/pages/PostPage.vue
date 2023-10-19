@@ -27,7 +27,8 @@
       v-if="!isPostLoading"
     />
     <div v-else>Loading... wait please</div>
-    <div class="observer" ref="observer"></div>
+    <!-- <div class="observer" ref="observer"></div> -->
+    <div class="observer" v-intersection="loadMorePost"></div>
     <!-- <div class="page-wrapper">
       <div
         class="page-line"
@@ -139,17 +140,17 @@ export default defineComponent({
   mounted() {
     this.fetchPost();
     console.log(this.$refs.observer);
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    const callback = (entries: any, observer: any) => {
-      if (entries[0].isIntersecting && this.page < this.totalPages) {
-        this.loadMorePost();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer as Element);
+    // const options = {
+    //   rootMargin: "0px",
+    //   threshold: 1.0,
+    // };
+    // const callback = (entries: any, observer: any) => {
+    //   if (entries[0].isIntersecting && this.page < this.totalPages) {
+    //     this.loadMorePost();
+    //   }
+    // };
+    // const observer = new IntersectionObserver(callback, options);
+    // observer.observe(this.$refs.observer as Element);
   },
   computed: {
     sortedPost() {
