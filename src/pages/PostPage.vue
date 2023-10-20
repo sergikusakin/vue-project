@@ -5,6 +5,7 @@
       class="space-search"
       v-model="searchQuery"
       placeholder="Search..."
+      v-focus
     ></my-input>
     <div class="app-btns">
       <my-button class="btn-dialog" @click="showDialog"
@@ -131,7 +132,7 @@ export default defineComponent({
             response.headers["x-total-count"] / this.limit
           );
           this.posts = [...this.posts, ...response.data];
-        }, 1000);
+        }, 500);
       } catch (e) {
         alert("Error");
       }
