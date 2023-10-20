@@ -17,8 +17,9 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  margin-top: auto;
-  align-self: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  align-self: flex-end;
   padding: 8px 12px;
   background: none;
   color: black;
