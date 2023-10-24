@@ -6,6 +6,9 @@
       <my-button class="btn-about" @click="$router.push('/about')"
         >About</my-button
       >
+      <my-button class="btn-store" @click="$router.push('/store')"
+        >Store</my-button
+      >
     </div>
   </div>
 </template>
@@ -35,6 +38,10 @@ export default defineComponent({
 }
 
 .btn-about {
+  margin-left: 10px;
+}
+
+.btn-store {
   margin-left: 10px;
 }
 </style>
