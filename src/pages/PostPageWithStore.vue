@@ -1,6 +1,15 @@
 <template>
   <div>
+    <h1>
+      {{ $store.state.isAuth ? "User authorized" : "User is not authorized" }}
+    </h1>
     <h1>{{ $store.state.likes }}</h1>
+    <h1>{{ $store.getters.dobleLikes }}</h1>
+    <br />
+    <div>
+      <my-button @click="$store.commit('incrementLikes')">Likes</my-button>
+      <my-button @click="$store.commit('decrementLikes')">Dislikes</my-button>
+    </div>
     <h1>Page with posts</h1>
     <my-input
       class="space-search"
