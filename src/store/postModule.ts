@@ -52,8 +52,11 @@ export const postModule = {
     setSelectedSort(state: any, selectedSort: any) {
       state.selectedSort = selectedSort;
     },
-    setSearchQuery(state: any, SearchQuery: any) {
-      state.SearchQuery = SearchQuery;
+    setSearchQuery(state: any, searchQuery: any) {
+      state.searchQuery = searchQuery;
+    },
+    setSelectedSort(state: any, selectedSort: any) {
+      state.selectedSort = selectedSort;
     },
   },
   actions: {

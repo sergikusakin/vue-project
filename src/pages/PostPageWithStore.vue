@@ -1,19 +1,10 @@
 <template>
   <div>
-    <h1>
-      {{ $store.state.isAuth ? "User authorized" : "User is not authorized" }}
-    </h1>
-    <h1>{{ $store.state.likes }}</h1>
-    <h1>{{ $store.getters.dobleLikes }}</h1>
-    <br />
-    <div>
-      <my-button @click="$store.commit('incrementLikes')">Likes</my-button>
-      <my-button @click="$store.commit('decrementLikes')">Dislikes</my-button>
-    </div>
     <h1>Page with posts</h1>
     <my-input
       class="space-search"
-      v-model="searchQuery"
+      :model-value="searchQuery"
+      @update:model-value="setSearchQuery"
       placeholder="Search..."
       v-focus
     ></my-input>
@@ -23,7 +14,8 @@
       >
       <my-select
         class="select"
-        v-model="selectedSort"
+        :model-value="selectedSort"
+        @update:model-value="setSelectedSort"
         :options="sortOptions"
       ></my-select>
     </div>
@@ -38,8 +30,8 @@
       v-if="!isPostLoading"
     />
     <div v-else>Loading... wait please</div>
-    <!-- <div class="observer" ref="observer"></div> -->
     <div class="observer" v-intersection="loadMorePost"></div>
+
     <!-- <div class="page-wrapper">
       <div
         class="page-line"
@@ -64,35 +56,38 @@ import MyButton from "@/components/UI/MyButton.vue";
 import MyInput from "@/components/UI/MyInput.vue";
 import type { Post } from "@/entities/post";
 import aixos from "axios";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default defineComponent({
-  components: { PostForm, PostList, MySelect, MyInput },
+  components: {
+    PostForm,
+    PostList,
+    MySelect,
+    MyInput,
+  },
 
   data() {
     return {
-      posts: [] as Post[],
       dialogVisible: false,
-      isPostLoading: false,
-      searchQuery: "",
-      page: 1,
-      limit: 10,
-      totalPages: 0,
-      selectedSort: undefined as "title" | "body" | undefined,
-      sortOptions: [
-        { value: undefined, name: "No sort" },
-        { value: "title", name: "Select by name" },
-        { value: "body", name: "Select by content" },
-      ],
     };
   },
 
   methods: {
+    ...mapMutations({
+      setPage: "post/setPage",
+      setSearchQuery: "post/setSearchQuery",
+      setSelectedSort: "post/setSelectedSort",
+    }),
+    ...mapActions({
+      loadMorePost: "post/loadMorePost",
+      fetchPost: "post/fetchPost",
+    }),
     createPost(post: Post) {
       this.posts.push(post);
       this.dialogVisible = false;
     },
     removePost(post: Post) {
-      this.posts = this.posts.filter((p) => p.id !== post.id);
+      this.posts = this.posts.filter((p: any) => p.id !== post.id);
     },
     showDialog() {
       this.dialogVisible = true;
@@ -101,56 +96,56 @@ export default defineComponent({
     //   this.page = pageNumber;
     // },
 
-    async fetchPost() {
-      try {
-        this.isPostLoading = true;
-        setTimeout(async () => {
-          const response = await aixos.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              },
-            }
-          );
-          this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
-          );
-          this.posts = response.data;
-          this.isPostLoading = false;
-        }, 1000);
-      } catch (e) {
-        alert("Error");
-      } finally {
-      }
-    },
-    async loadMorePost() {
-      try {
-        this.page++;
-        setTimeout(async () => {
-          const response = await aixos.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              },
-            }
-          );
-          this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
-          );
-          this.posts = [...this.posts, ...response.data];
-        }, 500);
-      } catch (e) {
-        alert("Error");
-      }
-    },
+    // async fetchPost() {
+    //   try {
+    //     this.isPostLoading = true;
+    //     setTimeout(async () => {
+    //       const response = await aixos.get(
+    //         "https://jsonplaceholder.typicode.com/posts",
+    //         {
+    //           params: {
+    //             _page: this.page,
+    //             _limit: this.limit,
+    //           },
+    //         }
+    //       );
+    //       this.totalPages = Math.ceil(
+    //         response.headers["x-total-count"] / this.limit
+    //       );
+    //       this.posts = response.data;
+    //       this.isPostLoading = false;
+    //     }, 1000);
+    //   } catch (e) {
+    //     alert("Error");
+    //   } finally {
+    //   }
+    // },
+    // async loadMorePost() {
+    //   try {
+    //     this.page++;
+    //     setTimeout(async () => {
+    //       const response = await aixos.get(
+    //         "https://jsonplaceholder.typicode.com/posts",
+    //         {
+    //           params: {
+    //             _page: this.page,
+    //             _limit: this.limit,
+    //           },
+    //         }
+    //       );
+    //       this.totalPages = Math.ceil(
+    //         response.headers["x-total-count"] / this.limit
+    //       );
+    //       this.posts = [...this.posts, ...response.data];
+    //     }, 500);
+    //   } catch (e) {
+    //     alert("Error");
+    //   }
+    // },
   },
   mounted() {
     this.fetchPost();
-    console.log(this.$refs.observer);
+    // console.log(this.$refs.observer);
     // const options = {
     //   rootMargin: "0px",
     //   threshold: 1.0,
@@ -164,23 +159,20 @@ export default defineComponent({
     // observer.observe(this.$refs.observer as Element);
   },
   computed: {
-    sortedPost() {
-      const sort = this.selectedSort;
-
-      if (sort === undefined) {
-        return this.posts;
-      }
-
-      return [...this.posts].sort((post1, post2) => {
-        return post1[sort]?.localeCompare(post2[sort]);
-      });
-    },
-
-    sortedAndSearchedPosts() {
-      return this.sortedPost.filter((post) =>
-        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    },
+    ...mapState({
+      posts: (state: any) => state.post.posts,
+      isPostLoading: (state: any) => state.post.isPostLoading,
+      searchQuery: (state: any) => state.post.searchQuery,
+      page: (state: any) => state.post.page,
+      limit: (state: any) => state.post.limit,
+      totalPages: (state: any) => state.post.totalPages,
+      selectedSort: (state: any) => state.post.selectedSort,
+      sortOptions: (state: any) => state.post.sortOptions,
+    }),
+    ...mapGetters({
+      sortedPost: "post/sortedPost",
+      sortedAndSearchedPosts: "post/sortedAndSearchedPosts",
+    }),
   },
   watch: {
     // page() {
