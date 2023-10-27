@@ -9,6 +9,9 @@
       <my-button class="btn-store" @click="$router.push('/store')"
         >Store</my-button
       >
+      <my-button class="btn-composition" @click="$router.push('/composition')"
+        >Composition</my-button
+      >
     </div>
   </div>
 </template>
@@ -42,6 +45,10 @@ export default defineComponent({
 }
 
 .btn-store {
+  margin-left: 10px;
+}
+
+.btn-composition {
   margin-left: 10px;
 }
 </style>
