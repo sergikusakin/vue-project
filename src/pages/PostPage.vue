@@ -108,11 +108,11 @@ export default defineComponent({
             response.headers["x-total-count"] / this.limit
           );
           this.posts = response.data;
-          this.isPostLoading = false;
-        }, 1000);
+        }, 500);
       } catch (e) {
         alert("Error");
       } finally {
+        this.isPostLoading = false;
       }
     },
     async loadMorePost() {
@@ -132,7 +132,7 @@ export default defineComponent({
             response.headers["x-total-count"] / this.limit
           );
           this.posts = [...this.posts, ...response.data];
-        }, 500);
+        }, 200);
       } catch (e) {
         alert("Error");
       }
