@@ -55,9 +55,6 @@ export const postModule = {
     setSearchQuery(state: any, searchQuery: any) {
       state.searchQuery = searchQuery;
     },
-    setSelectedSort(state: any, selectedSort: any) {
-      state.selectedSort = selectedSort;
-    },
   },
   actions: {
     async fetchPost({ state, commit }) {
