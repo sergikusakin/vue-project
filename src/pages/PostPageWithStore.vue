@@ -55,7 +55,7 @@ import MySelect from "@/components/UI/MySelect.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import MyInput from "@/components/UI/MyInput.vue";
 import type { Post } from "@/entities/post";
-import aixos from "axios";
+import axios from "axios";
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default defineComponent({
